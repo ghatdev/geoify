@@ -20,7 +20,7 @@ returns (locale: en)
     
 ## Example
 ```bash
-curl http://geoify.herokuapp.com/172.217.26.46
+curl http://api.geoify.info/172.217.26.46
 ```
 returns
 ```json

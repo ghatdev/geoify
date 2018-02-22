@@ -10,7 +10,7 @@ This product includes GeoLite2 data created by MaxMind, available from [http://w
 [![GeoLite2 License](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-sa/4.0/)
 
 ## Usage
-GET https://geoify.herokuapp.com/YOUR-IP-ADDRESS-TO-QUERY  
+GET https://api.geoify.info/YOUR-IP-ADDRESS-TO-QUERY  
 returns (locale: en)  
 - City Name
 - Subdivision Name

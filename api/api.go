@@ -14,8 +14,11 @@ import (
 var db *geoip.Reader
 
 type GeoInfo struct {
-	ISOCountryCode string `json:"isoCountryCode"`
-	TimeZone       string `json:"timeZone"`
+	CityName        string `json:"cityName"`
+	SubdivisionName string `json:"subdivisionName"`
+	CountryName     string `json:"countryName"`
+	ISOCountryCode  string `json:"isoCountryCode"`
+	TimeZone        string `json:"timeZone"`
 }
 
 func init() {
@@ -42,8 +45,11 @@ func GetIPGeoInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ipGeoInfo := &GeoInfo{
-		ISOCountryCode: record.Country.IsoCode,
-		TimeZone:       record.Location.TimeZone,
+		CityName:        record.City.Names["en"],
+		SubdivisionName: record.Subdivisions[0].Names["en"],
+		CountryName:     record.Country.Names["en"],
+		ISOCountryCode:  record.Country.IsoCode,
+		TimeZone:        record.Location.TimeZone,
 	}
 
 	response, err := json.Marshal(ipGeoInfo)

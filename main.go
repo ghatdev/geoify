@@ -1,10 +1,11 @@
 package main
 
 import (
-	"geoify/api"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/ghatdev/geoify/api"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"

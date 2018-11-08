@@ -10,4 +10,5 @@ require (
 	github.com/rs/cors v1.6.0
 	github.com/stretchr/testify v1.2.2 // indirect
 	golang.org/x/sys v0.0.0-20181107165924-66b7b1311ac8 // indirect
+	gopkg.in/robfig/cron.v2 v2.0.0-20150107220207-be2e0b0deed5
 )

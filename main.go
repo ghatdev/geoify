@@ -36,5 +36,7 @@ func main() {
 
 	addCron()
 
+	api.OpenDB()
+
 	log.Fatal(http.ListenAndServe(":"+port, App()))
 }

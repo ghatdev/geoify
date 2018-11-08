@@ -21,7 +21,7 @@ type GeoInfo struct {
 	TimeZone        string `json:"timeZone"`
 }
 
-func init() {
+func OpenDB() {
 	var err error
 
 	// Open GeoLite2 DB

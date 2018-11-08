@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	cron "gopkg.in/robfig/cron.v2"
@@ -42,6 +43,11 @@ func updateDB() {
 				break
 			}
 
+			_, err = os.Create("GeoLite2-City.mmdb")
+			if err != nil {
+				break
+			}
+
 			err = ioutil.WriteFile(name, buffer, 0644)
 			if err != nil {
 				break
@@ -56,7 +62,7 @@ func updateDB() {
 		}
 	}
 
-	log.Fatalln("DB update failed!2")
+	log.Fatalln("DB update failed!")
 }
 
 func addCron() {

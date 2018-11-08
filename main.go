@@ -14,6 +14,7 @@ import (
 func App() http.Handler {
 	r := mux.NewRouter()
 
+	r.HandleFunc("/", api.GetMyIPGeoInfo)
 	r.HandleFunc("/{ip}", api.GetIPGeoInfo)
 
 	r.MethodNotAllowedHandler = http.HandlerFunc(api.MethodNotAllowed)

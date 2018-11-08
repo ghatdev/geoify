@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
 
@@ -31,17 +32,13 @@ func OpenDB() {
 	}
 }
 
-func GetIPGeoInfo(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	ip := net.ParseIP(vars["ip"])
-
+func queryIP(ip net.IP) *GeoInfo {
 	record, err := db.City(ip)
 	if err != nil {
 		log.Println("Unalble to parse ip info")
 		log.Println(err)
 
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+		return nil
 	}
 
 	ipGeoInfo := &GeoInfo{
@@ -50,6 +47,44 @@ func GetIPGeoInfo(w http.ResponseWriter, r *http.Request) {
 		CountryName:     record.Country.Names["en"],
 		ISOCountryCode:  record.Country.IsoCode,
 		TimeZone:        record.Location.TimeZone,
+	}
+
+	return ipGeoInfo
+}
+
+func GetMyIPGeoInfo(w http.ResponseWriter, r *http.Request) {
+	ip := net.ParseIP(strings.Split(r.Header.Get("X-Forwarded-For"), ",")[0])
+
+	ipGeoInfo := queryIP(ip)
+	if ipGeoInfo == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	response, err := json.Marshal(ipGeoInfo)
+	if err != nil {
+		log.Println("Failed to encode info")
+		log.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+}
+
+func GetIPGeoInfo(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	ip := net.ParseIP(vars["ip"])
+
+	if ip == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	ipGeoInfo := queryIP(ip)
+	if ipGeoInfo == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	response, err := json.Marshal(ipGeoInfo)

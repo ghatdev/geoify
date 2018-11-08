@@ -22,11 +22,19 @@ func App() http.Handler {
 	return cors.Default().Handler(r)
 }
 
+func init() {
+	log.Println("Downloading DB file...")
+	updateDB()
+	log.Println("DB file successfully updated!")
+}
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
 	}
+
+	addCron()
 
 	log.Fatal(http.ListenAndServe(":"+port, App()))
 }
